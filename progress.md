@@ -67,4 +67,13 @@ Verdicts: **Clean** · **Slow** · **Hints** · **Fail**. Anything not Clean get
 
 ## 5. Open Decisions
 
-- **System Design Primer placement:** PARKED in `system-design/` — do not schedule until loop level is confirmed. New-grad style → November-optional. Mid-level+ with likely design round → carve in from Week 6, one block/week.
+- **System Design Primer placement:** RESOLVED Sep 2 — targeting **new-grad roles**, so the Primer is November-optional. Week 6 stays as scheduled; revisit only if a specific loop adds a design round.
+
+---
+
+## 6. Application Pipeline (new-grad)
+
+Second job of this repo: track the hunt. One row per application; update status as it moves. Statuses: **Applied** → **OA** → **Phone** → **Onsite** → **Offer** / **Rejected** / **Ghosted**.
+
+| Company | Role | Applied | Status | Next step |
+|---|---|---|---|---|

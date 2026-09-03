@@ -2,6 +2,8 @@
 
 Adaptive interview-prep repo. The schedule lives in `plan.md`; the state lives in `progress.md`. Claude is the quiz engine; this repo is its memory.
 
+**Second role:** Claude sessions here also run the **new-grad job hunt** — analyzing postings, tailoring the resume/cover letters, drafting outreach, prepping behavioral stories, and keeping the application pipeline (`progress.md` §6) current. Same rule as prep: if it isn't in the ledger, it didn't happen.
+
 ## Layout
 
 ```
