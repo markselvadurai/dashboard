@@ -10,8 +10,8 @@ Statuses: **Untouched** → **Learning** (currently studying) → **Shaky** (tou
 
 | Pattern | Week | Status | Last touched | Notes |
 |---|---|---|---|---|
-| Arrays & Hashing | 0–1 | Learning | Sep 2 | Cue recognized in quiz (hash-set membership) |
-| Two Pointers | 2 | Untouched | — | Cue probe pending — today's rep quiz Q1 |
+| Arrays & Hashing | 0–1 | Learning | Sep 3 | 8/9 NeetCode solved Sep 3 (3 Clean, 4 Slow, 1 Hints) → 5 rep chains running; Big-O phrasing needs polish |
+| Two Pointers | 2 | Untouched | Sep 3 | Cue confirmed Sep 3 quiz (sorted+pair → converge + discard proof); solving starts W2 |
 | Binary Search (classic) | 2 | Untouched | — | |
 | Binary Search on the Answer | 2 | **Shaky** | Sep 2 | Failed cue quiz; cue = "smallest/largest X such that condition holds" |
 | Sliding Window | 3 | Untouched | — | Cue recognized twice in quizzes — solving still untouched |
@@ -38,10 +38,18 @@ Verdicts: **Clean** · **Slow** · **Hints** · **Fail**. Anything not Clean get
 
 | Date | Problem | Pattern | Verdict | One-line takeaway | Reps due |
 |---|---|---|---|---|---|
-| Sep 2 | Cue quiz: BS-on-the-answer | Binary search (answer) | Fail | "Smallest X satisfying condition" → search the answer space, greedy feasibility check | Sep 3 ✅ · Sep 5 · Sep 9 |
-| Sep 2 | Cue quiz: monotonic stack | Monotonic stack | Fail | "Next greater / first taller to the right" → mono stack, newcomers resolve waiters | Sep 3 ✅ · Sep 5 · Sep 9 |
+| Sep 2 | Cue quiz: BS-on-the-answer | Binary search (answer) | Fail | "Smallest X satisfying condition" → search the answer space, greedy feasibility check | Sep 4 · Sep 6 · Sep 10 |
+| Sep 2 | Cue quiz: monotonic stack | Monotonic stack | Fail | "Next greater / first taller to the right" → mono stack, newcomers resolve waiters | with W3 Stack study |
+| Sep 3 | Contains Duplicate | Arrays & Hashing | Clean | Seen-before? → hash-set membership | — |
+| Sep 3 | Valid Anagram | Arrays & Hashing | Clean | Compare letter-count maps (or sorted strings) | — |
+| Sep 3 | Two Sum | Arrays & Hashing | Clean | Unsorted pair-target → one-pass hashmap of complements; sorting is O(n log n) and loses indices | — |
+| Sep 3 | Group Anagrams | Arrays & Hashing | Slow | Anagram bucket key = 26-letter count tuple (immutable → hashable) | Sep 4 · Sep 6 · Sep 10 |
+| Sep 3 | Top K Frequent Elements | Arrays & Hashing | Slow | Count map first, then heap or bucket-by-frequency for the top k | Sep 4 · Sep 6 · Sep 10 |
+| Sep 3 | Encode and Decode Strings | Arrays & Hashing | Hints | Length-prefix each string ("4#abcd") — delimiters can appear inside the data | Sep 4 · Sep 6 · Sep 10 |
+| Sep 3 | Product of Array Except Self | Arrays & Hashing | Slow | output[i] = prefix product (before i) × suffix product (after i); follow-up: fold a running product into output for O(1) space | Sep 4 · Sep 6 · Sep 10 |
+| Sep 3 | Valid Sudoku | Arrays & Hashing | Slow | 9 row sets + 9 col sets + 9 box sets; box id = (r//3, c//3) | Sep 4 · Sep 6 · Sep 10 |
 
-*(Sep 3 boxes pre-checked assuming today's rep quiz gets taken — flip to ❌ on any question missed and reset that chain to +1/+3/+7 from today.)*
+*(Sep 2 cue chains re-aligned to roadmap order Sep 3: BS-on-answer rep runs with the W2 start (Sep 4); monotonic stack waits for W3 Stack study. Nothing failed — deferred by design: quiz only touched material.)*
 
 ---
 
@@ -50,7 +58,7 @@ Verdicts: **Clean** · **Slow** · **Hints** · **Fail**. Anything not Clean get
 | Date | Quiz | Score | Outcome |
 |---|---|---|---|
 | Sep 2 | Pattern cues #1 (5Q) | 3/5* | Missed BS-on-answer + mono stack → seeded reps above. *Q2 (two pointers) never reported |
-| Sep 3 | Cue rep #1 (4Q) | —/4 | Fill in: Q1 resolves the two-pointers unknown; Q2/Q4 are the rep targets; Q3 is the window-vs-BS discriminator |
+| Sep 3 | Cue rep #1 (4Q, A&H edition) | 4/4* | Q1: two-pointers cue confirmed (sorted+pair → converge, each move *discards* candidates). Q2–Q4 A&H retention all passed. *Language flags: said "O(log n)" for sort cost and pass count (→ O(n log n) / O(n)); said "sum" for "product" and swapped prefix/suffix names — drill Big-O phrasing aloud. W2/W3 cue reps deferred to topic start. Bonus AM rep: hashmap key immutability + Java cached-hash — Clean |
 
 ---
 
