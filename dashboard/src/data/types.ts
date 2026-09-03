@@ -76,6 +76,8 @@ export interface WorklistItem {
   kind: "problem" | "reading";
   item: string;
   pattern: string; // "—" for readings
+  /** essay URL, when the plan.md cell is a markdown link */
+  link?: string;
 }
 
 export interface PlanData {

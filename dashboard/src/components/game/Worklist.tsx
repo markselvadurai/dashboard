@@ -19,7 +19,7 @@ export function WorklistItems({
   limit?: number;
 }) {
   const { addReading, readOnly } = useLedgerStore();
-  const reading = items.find((i) => i.item.kind === "reading");
+  const readings = items.filter((i) => i.item.kind === "reading");
   const problems = items.filter((i) => i.item.kind === "problem");
   const undone = problems.filter((p) => !p.done);
   const shown = limit ? undone.slice(0, limit) : problems;
@@ -28,23 +28,28 @@ export function WorklistItems({
 
   return (
     <div className="flex flex-col gap-2">
-      {reading && (
+      {readings.map((reading) => (
         <div
+          key={reading.item.item}
           className={cn(
             "flex items-center gap-2.5 rounded-xl px-3 py-2",
             reading.done ? "bg-clean/15" : "bg-table",
           )}
         >
           <span className="kicker shrink-0 text-ink-soft">Essay</span>
-          <a
-            href="https://labuladong.online/en/"
-            target="_blank"
-            rel="noreferrer"
-            className="min-w-0 flex-1 truncate text-[13px] font-bold text-ink underline decoration-shadow underline-offset-2 hover:decoration-ink"
-            title={`${reading.item.item} — labuladong.online`}
-          >
-            {reading.item.item}
-          </a>
+          {reading.item.link ? (
+            <a
+              href={reading.item.link}
+              target="_blank"
+              rel="noreferrer"
+              className="min-w-0 flex-1 truncate text-[13px] font-bold text-ink underline decoration-shadow underline-offset-2 hover:decoration-ink"
+              title={`${reading.item.item} — labuladong.online`}
+            >
+              {reading.item.item}
+            </a>
+          ) : (
+            <span className="min-w-0 flex-1 truncate text-[13px] font-bold text-ink">{reading.item.item}</span>
+          )}
           {reading.done ? (
             <span className="shrink-0 rounded-full bg-clean px-2.5 py-1 text-[11px] font-[900] text-white shadow-[0_3px_0_var(--clean-drop)]">
               read ✓
@@ -61,7 +66,7 @@ export function WorklistItems({
             </button>
           )}
         </div>
-      )}
+      ))}
       <div className="flex flex-wrap gap-1.5">
         {shown.map(({ item, done }) => (
           <button

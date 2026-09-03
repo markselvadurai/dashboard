@@ -173,7 +173,7 @@ The §4 phase details as a checkable list — the dashboard reads this table. On
 
 | Week | Kind | Item | Pattern |
 |---|---|---|---|
-| 0 | reading | Framework thinking intro — how templates beat memorization | — |
+| 0 | reading | [How to Think About Data Structure and Algorithm](https://labuladong.online/en/algo/essential-technique/algorithm-summary/) | — |
 | 0 | problem | Two Sum | Arrays & Hashing |
 | 0 | problem | Valid Parentheses | Stack (classic) |
 | 0 | problem | Best Time to Buy and Sell Stock | Sliding Window |
@@ -181,13 +181,15 @@ The §4 phase details as a checkable list — the dashboard reads this table. On
 | 0 | problem | Contains Duplicate | Arrays & Hashing |
 | 0 | problem | Valid Anagram | Arrays & Hashing |
 | 0 | problem | Group Anagrams | Arrays & Hashing |
-| 1 | reading | Prefix sum + hash map technique essays | — |
+| 1 | reading | [Prefix Sum Array Technique](https://labuladong.online/en/algo/data-structure/prefix-sum/) | — |
+| 1 | reading | [Basic Concept of HashMap](https://labuladong.online/en/algo/data-structure-basic/hashmap-basic/) | — |
 | 1 | problem | Top K Frequent Elements | Arrays & Hashing |
 | 1 | problem | Product of Array Except Self | Arrays & Hashing |
 | 1 | problem | Valid Sudoku | Arrays & Hashing |
 | 1 | problem | Longest Consecutive Sequence | Arrays & Hashing |
 | 1 | problem | Encode and Decode Strings | Arrays & Hashing |
-| 2 | reading | Binary search boundary framework | — |
+| 2 | reading | [Two Pointer Techniques for Array Problems](https://labuladong.online/en/algo/essential-technique/array-two-pointers-summary/) | — |
+| 2 | reading | [Binary Search Algorithm Code Template](https://labuladong.online/en/algo/essential-technique/binary-search-framework/) | — |
 | 2 | problem | Valid Palindrome | Two Pointers |
 | 2 | problem | Two Sum II | Two Pointers |
 | 2 | problem | 3Sum | Two Pointers |
@@ -197,7 +199,8 @@ The §4 phase details as a checkable list — the dashboard reads this table. On
 | 2 | problem | Find Minimum in Rotated Sorted Array | Binary Search (classic) |
 | 2 | problem | Koko Eating Bananas | Binary Search on the Answer |
 | 2 | problem | Search a 2D Matrix | Binary Search (classic) |
-| 3 | reading | Sliding window template + monotonic stack essay | — |
+| 3 | reading | [Sliding Window Algorithm Code Template](https://labuladong.online/en/algo/essential-technique/sliding-window-framework/) | — |
+| 3 | reading | [Monotonic Stack Code Template](https://labuladong.online/en/algo/data-structure/monotonic-stack/) | — |
 | 3 | problem | Longest Substring Without Repeating Characters | Sliding Window |
 | 3 | problem | Longest Repeating Character Replacement | Sliding Window |
 | 3 | problem | Permutation in String | Sliding Window |
@@ -206,7 +209,8 @@ The §4 phase details as a checkable list — the dashboard reads this table. On
 | 3 | problem | Daily Temperatures | Monotonic Stack |
 | 3 | problem | Generate Parentheses | Stack (classic) |
 | 3 | problem | Car Fleet | Monotonic Stack |
-| 4 | reading | Two-pointer linked list tricks + traverse-vs-decompose tree recursion | — |
+| 4 | reading | [Two Pointer Techniques for Linked List Problems](https://labuladong.online/en/algo/essential-technique/linked-list-skills-summary/) | — |
+| 4 | reading | [Thinking Recursion Algorithms from Binary Tree Perspective](https://labuladong.online/en/algo/essential-technique/binary-tree-summary/) | — |
 | 4 | problem | Merge Two Sorted Lists | Linked Lists |
 | 4 | problem | Linked List Cycle | Linked Lists |
 | 4 | problem | Reorder List | Linked Lists |
@@ -220,7 +224,7 @@ The §4 phase details as a checkable list — the dashboard reads this table. On
 | 4 | problem | Balanced Binary Tree | Trees I (traversal) |
 | 4 | problem | Same Tree | Trees I (traversal) |
 | 4 | problem | Subtree of Another Tree | Trees I (traversal) |
-| 5 | reading | BST framework essays | — |
+| 5 | reading | [Binary Search Tree in Action, Part 1 (In-order)](https://labuladong.online/en/algo/data-structure/bst-part1/) | — |
 | 5 | problem | Lowest Common Ancestor of a BST | Trees II (BST) |
 | 5 | problem | Binary Tree Level Order Traversal | Trees II (BST) |
 | 5 | problem | Binary Tree Right Side View | Trees II (BST) |
@@ -233,7 +237,7 @@ The §4 phase details as a checkable list — the dashboard reads this table. On
 | 5 | problem | K Closest Points to Origin | Heaps |
 | 5 | problem | Kth Largest Element in an Array | Heaps |
 | 5 | problem | Task Scheduler | Heaps |
-| 6 | reading | Backtracking choose/explore/unchoose framework — read before solving | — |
+| 6 | reading | [Backtracking Algorithm Common Patterns and Code Template](https://labuladong.online/en/algo/essential-technique/backtrack-framework/) | — |
 | 6 | problem | Subsets | Backtracking |
 | 6 | problem | Subsets II | Backtracking |
 | 6 | problem | Combination Sum | Backtracking |
@@ -244,7 +248,8 @@ The §4 phase details as a checkable list — the dashboard reads this table. On
 | 6 | problem | Letter Combinations of a Phone Number | Backtracking |
 | 6 | problem | Implement Trie | Tries |
 | 6 | problem | Design Add and Search Words | Tries |
-| 7 | reading | BFS framework + island/flood-fill series | — |
+| 7 | reading | [BFS Algorithm Common Patterns and Code Template](https://labuladong.online/en/algo/essential-technique/bfs-framework/) | — |
+| 7 | reading | [Solve All Island Problems with DFS](https://labuladong.online/en/algo/frequency-interview/island-dfs-summary/) | — |
 | 7 | problem | Number of Islands | Graphs (BFS/DFS) |
 | 7 | problem | Clone Graph | Graphs (BFS/DFS) |
 | 7 | problem | Max Area of Island | Graphs (BFS/DFS) |
@@ -260,7 +265,7 @@ The §4 phase details as a checkable list — the dashboard reads this table. On
 | 7 | problem | Non-Overlapping Intervals | Intervals |
 | 7 | problem | Meeting Rooms | Intervals |
 | 7 | problem | Meeting Rooms II | Intervals |
-| 8 | reading | DP framework series (state → choices → base case) | — |
+| 8 | reading | [Dynamic Programming Common Patterns and Code Template](https://labuladong.online/en/algo/essential-technique/dynamic-programming-framework/) | — |
 | 8 | problem | Climbing Stairs | 1D DP |
 | 8 | problem | Min Cost Climbing Stairs | 1D DP |
 | 8 | problem | House Robber | 1D DP |

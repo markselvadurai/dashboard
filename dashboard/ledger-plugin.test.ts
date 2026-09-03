@@ -94,10 +94,14 @@ describe("parsers on the real files", () => {
 
   it("parses the week worklists", () => {
     const p = parsePlan(plan);
-    expect(p.worklist.length).toBe(101);
-    expect(p.worklist.filter((w) => w.kind === "reading").length).toBe(9);
+    expect(p.worklist.length).toBe(106);
+    expect(p.worklist.filter((w) => w.kind === "reading").length).toBe(14);
     const koko = p.worklist.find((w) => w.item === "Koko Eating Bananas");
     expect(koko).toMatchObject({ week: "2", kind: "problem", pattern: "Binary Search on the Answer" });
+    // reading cells are markdown links → title + url split apart
+    const dp = p.worklist.find((w) => w.item.startsWith("Dynamic Programming"));
+    expect(dp?.link).toBe("https://labuladong.online/en/algo/essential-technique/dynamic-programming-framework/");
+    expect(dp?.item).not.toContain("](");
   });
 
   it("parses the (empty) reading log and accepts appended rows", () => {

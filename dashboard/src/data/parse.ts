@@ -156,12 +156,17 @@ export function parsePlan(content: string): PlanData {
     what: (c[2] ?? "").replace(/\*/g, ""),
   }));
 
-  const worklist = tableInSection(content, "Week Worklists").map((c) => ({
-    week: c[0] ?? "",
-    kind: (c[1] === "reading" ? "reading" : "problem") as "problem" | "reading",
-    item: c[2] ?? "",
-    pattern: c[3] ?? "—",
-  }));
+  const worklist = tableInSection(content, "Week Worklists").map((c) => {
+    const raw = c[2] ?? "";
+    const md = /^\[(.+?)\]\((.+?)\)$/.exec(raw);
+    return {
+      week: c[0] ?? "",
+      kind: (c[1] === "reading" ? "reading" : "problem") as "problem" | "reading",
+      item: md ? md[1] : raw,
+      link: md?.[2],
+      pattern: c[3] ?? "—",
+    };
+  });
 
   return { roadmap, gear1, gear2, worklist };
 }
