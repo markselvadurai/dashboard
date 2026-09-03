@@ -1,4 +1,4 @@
-import type { Ledger, MistakeLogEntry, PatternStatus, PlanData, RoadmapWeek, Verdict } from "./types";
+import type { Ledger, MistakeLogEntry, PatternStatus, PlanData, RoadmapWeek, Verdict, WorklistItem } from "./types";
 import { parseShortDate, formatShortDate, addDays, daysBetween, sameDay, ARC_START, ARC_END } from "./dates";
 
 export function currentWeek(plan: PlanData, day: Date): RoadmapWeek | undefined {
@@ -40,7 +40,10 @@ export function studiedDays(ledger: Ledger, punched: ReadonlySet<string>, today:
     if (e.date) clampAdd(e.date);
     for (const r of e.reps) if (r.state === "done") clampAdd(r.date);
   }
-  for (const q of ledger.quizLog) if (q.date) clampAdd(q.date);
+  for (const q of ledger.quizLog) {
+    // a queued quiz ("—/4") isn't activity until it's taken
+    if (q.date && !/^[—-]/.test(q.score.trim())) clampAdd(q.date);
+  }
   return set;
 }
 
@@ -223,6 +226,48 @@ export function cumulativeSolves(ledger: Ledger, today: Date): { day: number; co
   for (let day = 1; day <= lastDay; day++) {
     cum += byDay.get(day) ?? 0;
     out.push({ day, count: cum });
+  }
+  return out;
+}
+
+/* ─── the week worklist (plan.md §10 vs the ledger) ─── */
+
+/** Loose name normalization so "Buy/Sell Stock" matches "Best Time to Buy and Sell Stock". */
+export function normalizeName(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function namesMatch(a: string, b: string): boolean {
+  if (a === b) return true;
+  return a.length > 8 && b.length > 8 && (a.includes(b) || b.includes(a));
+}
+
+export interface WorklistStatus {
+  item: WorklistItem;
+  done: boolean;
+}
+
+export function worklistForWeek(plan: PlanData, ledger: Ledger, week: string): WorklistStatus[] {
+  const solved = ledger.mistakeLog.map((e) => normalizeName(e.problem));
+  const read = ledger.readingLog.map((r) => normalizeName(r.essay));
+  return plan.worklist
+    .filter((w) => w.week === week)
+    .map((item) => {
+      const n = normalizeName(item.item);
+      const done =
+        item.kind === "problem" ? solved.some((s) => namesMatch(s, n)) : read.some((r) => namesMatch(r, n));
+      return { item, done };
+    });
+}
+
+export function worklistProgress(plan: PlanData, ledger: Ledger): Map<string, { done: number; total: number }> {
+  const out = new Map<string, { done: number; total: number }>();
+  for (const w of new Set(plan.worklist.map((i) => i.week))) {
+    const items = worklistForWeek(plan, ledger, w);
+    out.set(w, { done: items.filter((i) => i.done).length, total: items.length });
   }
   return out;
 }

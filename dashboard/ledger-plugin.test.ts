@@ -91,4 +91,20 @@ describe("parsers on the real files", () => {
     expect(p.gear1.length).toBe(3);
     expect(p.gear2.length).toBe(4);
   });
+
+  it("parses the week worklists", () => {
+    const p = parsePlan(plan);
+    expect(p.worklist.length).toBe(101);
+    expect(p.worklist.filter((w) => w.kind === "reading").length).toBe(9);
+    const koko = p.worklist.find((w) => w.item === "Koko Eating Bananas");
+    expect(koko).toMatchObject({ week: "2", kind: "problem", pattern: "Binary Search on the Answer" });
+  });
+
+  it("parses the (empty) reading log and accepts appended rows", () => {
+    expect(parseProgress(progress).readingLog).toEqual([]);
+    const after = appendRow(progress, "Reading Log", ["Sep 3", "Framework thinking intro", "0"]);
+    expect(parseProgress(after).readingLog).toEqual([
+      { date: "Sep 3", essay: "Framework thinking intro", week: "0" },
+    ]);
+  });
 });

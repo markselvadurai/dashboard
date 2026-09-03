@@ -79,3 +79,12 @@ Second job of this repo: track the hunt. One row per application; update status 
 
 | Company | Role | Applied | Status | Next step |
 |---|---|---|---|---|
+
+---
+
+## 7. Reading Log
+
+One row per labuladong essay finished (read → tab closed → template written from memory). The dashboard checks worklist readings (plan.md §10) against this table.
+
+| Date | Essay | Week |
+|---|---|---|

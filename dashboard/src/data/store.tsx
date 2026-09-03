@@ -28,6 +28,7 @@ interface StoreValue {
   missRep: (due: DueRep) => Promise<void>;
   addSolve: (input: { problem: string; pattern: string; verdict: Verdict; takeaway: string }) => Promise<void>;
   addQuiz: (input: { quiz: string; score: string; outcome: string }) => Promise<void>;
+  addReading: (input: { essay: string; week: string }) => Promise<void>;
   setPatternStatus: (pattern: string, status: PatternStatus) => Promise<void>;
   setCheckpointResult: (num: string, result: string) => Promise<void>;
 }
@@ -151,6 +152,13 @@ export function LedgerProvider({ children }: { children: ReactNode }) {
           op: "appendRow",
           section: "Quiz Log",
           cells: [formatShortDate(today()), quiz, score, outcome],
+        }),
+
+      addReading: ({ essay, week }) =>
+        send({
+          op: "appendRow",
+          section: "Reading Log",
+          cells: [formatShortDate(today()), essay, week],
         }),
 
       setPatternStatus: (pattern, status) =>

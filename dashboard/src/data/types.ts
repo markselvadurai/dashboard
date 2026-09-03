@@ -56,16 +56,31 @@ export interface GearBlock {
   what: string;
 }
 
+export interface ReadingLogEntry {
+  date: string;
+  essay: string;
+  week: string;
+}
+
 export interface Ledger {
   patterns: PatternConfidence[];
   mistakeLog: MistakeLogEntry[];
   quizLog: QuizLogEntry[];
   checkpoints: CheckpointRow[];
   openDecisions: string[];
+  readingLog: ReadingLogEntry[];
+}
+
+export interface WorklistItem {
+  week: string; // "0".."8"
+  kind: "problem" | "reading";
+  item: string;
+  pattern: string; // "—" for readings
 }
 
 export interface PlanData {
   roadmap: RoadmapWeek[];
   gear1: GearBlock[];
   gear2: GearBlock[];
+  worklist: WorklistItem[];
 }

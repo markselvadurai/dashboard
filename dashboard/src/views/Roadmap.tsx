@@ -1,9 +1,12 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { Board } from "@/components/game/Board";
 import { FlagIcon } from "@/components/game/Frame";
+import { WorklistItems } from "@/components/game/Worklist";
 import { useLedgerStore } from "@/data/store";
-import { boardDays, studiedDays, cumulativeSolves } from "@/data/derive";
+import { boardDays, studiedDays, cumulativeSolves, worklistForWeek, worklistProgress } from "@/data/derive";
 import { parseShortDate } from "@/data/dates";
+import type { WorklistItem } from "@/data/types";
 import { cn } from "@/lib/utils";
 
 const X = (d: number) => 20 + (d - 1) * (460 / 61);
@@ -21,13 +24,35 @@ function linePath(top: number): string {
   return s;
 }
 
-export function RoadmapView({ today, punched }: { today: Date; punched: Set<string> }) {
+export function RoadmapView({
+  today,
+  punched,
+  onPickProblem,
+}: {
+  today: Date;
+  punched: Set<string>;
+  onPickProblem?: (item: WorklistItem) => void;
+}) {
   const { ledger, plan, setCheckpointResult } = useLedgerStore();
   const studied = useMemo(() => (ledger ? studiedDays(ledger, punched, today) : new Set<string>()), [ledger, punched, today]);
   const days = useMemo(() => boardDays(studied, today), [studied, today]);
   const cumulative = useMemo(() => (ledger ? cumulativeSolves(ledger, today) : []), [ledger, today]);
+  const currentWeekKey = plan?.roadmap.find((w) => today >= w.start && today <= w.end)?.week;
+  const [openWeeks, setOpenWeeks] = useState<Set<string>>(() => new Set(currentWeekKey ? [currentWeekKey] : []));
+  const progress = useMemo(
+    () => (ledger && plan ? worklistProgress(plan, ledger) : new Map<string, { done: number; total: number }>()),
+    [ledger, plan],
+  );
 
   if (!ledger || !plan) return null;
+
+  const toggleWeek = (w: string) =>
+    setOpenWeeks((prev) => {
+      const next = new Set(prev);
+      if (next.has(w)) next.delete(w);
+      else next.add(w);
+      return next;
+    });
 
   const last = cumulative[cumulative.length - 1] ?? { day: 1, count: 0 };
   const actualPts = cumulative.map((p) => `${X(p.day).toFixed(1)},${Y(p.count).toFixed(1)}`).join(" ");
@@ -94,29 +119,66 @@ export function RoadmapView({ today, punched }: { today: Date; punched: Set<stri
           {plan.roadmap.map((w) => {
             const cur = today >= w.start && today <= w.end;
             const gate = /checkpoint/i.test(w.milestone);
+            const open = openWeeks.has(w.week);
+            const prog = progress.get(w.week);
             return (
-              <div
-                key={w.week}
-                className={cn(
-                  "grid grid-cols-[52px_1fr_auto] items-center gap-3.5 rounded-[14px] px-4 py-2.5 xl:grid-cols-[52px_120px_1fr_auto]",
-                  cur ? "scale-[1.02] bg-ink text-table shadow-[0_8px_0_var(--ink-drop)]" : "bg-card shadow-[0_5px_0_var(--shadow)]",
-                )}
-              >
-                <span className="font-display text-xl">W{w.week}</span>
-                <span className="hidden text-[13px] font-bold opacity-80 xl:block">{w.dates}</span>
-                <div className="min-w-0">
-                  <div className="text-[15px] font-[900]">{w.topics}</div>
-                  <div className="text-xs font-semibold opacity-80">{w.milestone || "—"}</div>
-                </div>
-                <span
-                  className="rounded-full px-2.5 py-1 text-[11px] font-[900] whitespace-nowrap"
-                  style={{
-                    background: cur ? "var(--pawn)" : gate ? "var(--gate)" : "var(--table)",
-                    color: cur ? "var(--ink)" : gate ? "var(--fail-drop)" : "var(--ink-soft)",
-                  }}
+              <div key={w.week}>
+                <button
+                  onClick={() => toggleWeek(w.week)}
+                  aria-expanded={open}
+                  className={cn(
+                    "grid w-full grid-cols-[52px_1fr_auto] items-center gap-3.5 rounded-[14px] px-4 py-2.5 text-left xl:grid-cols-[52px_120px_1fr_auto]",
+                    cur ? "scale-[1.02] bg-ink text-table shadow-[0_8px_0_var(--ink-drop)]" : "bg-card shadow-[0_5px_0_var(--shadow)]",
+                  )}
                 >
-                  {cur ? "CURRENT WEEK" : gate ? "⚑ gate" : "ahead"}
-                </span>
+                  <span className="font-display text-xl">W{w.week}</span>
+                  <span className="hidden text-[13px] font-bold opacity-80 xl:block">{w.dates}</span>
+                  <div className="min-w-0">
+                    <div className="text-[15px] font-[900]">{w.topics}</div>
+                    <div className="text-xs font-semibold opacity-80">{w.milestone || "—"}</div>
+                  </div>
+                  <span className="flex items-center gap-2">
+                    {prog && prog.total > 0 && (
+                      <span
+                        className={cn(
+                          "rounded-full px-2 py-1 text-[11px] font-[900] whitespace-nowrap",
+                          prog.done === prog.total ? "bg-clean text-white" : cur ? "bg-table/20" : "bg-table text-ink-soft",
+                        )}
+                      >
+                        {prog.done}/{prog.total}
+                      </span>
+                    )}
+                    <span
+                      className="rounded-full px-2.5 py-1 text-[11px] font-[900] whitespace-nowrap"
+                      style={{
+                        background: cur ? "var(--pawn)" : gate ? "var(--gate)" : "var(--table)",
+                        color: cur ? "var(--ink)" : gate ? "var(--fail-drop)" : "var(--ink-soft)",
+                      }}
+                    >
+                      {cur ? "CURRENT WEEK" : gate ? "⚑ gate" : "ahead"}
+                    </span>
+                    <span className={cn("text-xs transition-transform", open && "rotate-180")}>▾</span>
+                  </span>
+                </button>
+                <AnimatePresence initial={false}>
+                  {open && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mx-2 rounded-b-[14px] bg-card/70 px-4 py-3 shadow-[0_5px_0_var(--shadow-light)]">
+                        <WorklistItems
+                          items={worklistForWeek(plan, ledger, w.week)}
+                          week={w.week}
+                          onLogProblem={onPickProblem}
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}

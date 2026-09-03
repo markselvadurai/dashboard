@@ -14,6 +14,7 @@ import { STATIC_MODE } from "./lib/motion-mode";
 export default function App() {
   const { ledger, plan, error, loading, readOnly } = useLedgerStore();
   const [view, setView] = useState<ViewId>("today");
+  const [prefill, setPrefill] = useState<{ problem: string; pattern: string } | null>(null);
   const { punched, punchIn } = usePunched();
   const reduced = useReducedMotion();
   const today = getToday();
@@ -76,10 +77,27 @@ export default function App() {
               exit={reduced || STATIC_MODE ? undefined : { opacity: 0, y: -8, transition: { duration: 0.12 } }}
               transition={{ type: "spring", stiffness: 420, damping: 34 }}
             >
-              {view === "today" && <TodayView today={today} punched={punched} punchIn={punchIn} />}
+              {view === "today" && (
+                <TodayView
+                  today={today}
+                  punched={punched}
+                  punchIn={punchIn}
+                  prefill={prefill}
+                  onPrefillConsumed={() => setPrefill(null)}
+                />
+              )}
               {view === "patterns" && <PatternsView />}
               {view === "ledger" && <LedgerView today={today} />}
-              {view === "roadmap" && <RoadmapView today={today} punched={punched} />}
+              {view === "roadmap" && (
+                <RoadmapView
+                  today={today}
+                  punched={punched}
+                  onPickProblem={(item) => {
+                    setPrefill({ problem: item.item, pattern: item.pattern });
+                    setView("today");
+                  }}
+                />
+              )}
             </motion.div>
           </AnimatePresence>
         )}

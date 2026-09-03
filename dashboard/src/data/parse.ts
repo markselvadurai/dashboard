@@ -118,7 +118,13 @@ export function parseProgress(content: string): Ledger {
     }
   }
 
-  return { patterns, mistakeLog, quizLog, checkpoints, openDecisions };
+  const readingLog = tableInSection(content, "Reading Log").map((c) => ({
+    date: c[0] ?? "",
+    essay: c[1] ?? "",
+    week: c[2] ?? "",
+  }));
+
+  return { patterns, mistakeLog, quizLog, checkpoints, openDecisions, readingLog };
 }
 
 // ---------- plan.md ----------
@@ -150,5 +156,12 @@ export function parsePlan(content: string): PlanData {
     what: (c[2] ?? "").replace(/\*/g, ""),
   }));
 
-  return { roadmap, gear1, gear2 };
+  const worklist = tableInSection(content, "Week Worklists").map((c) => ({
+    week: c[0] ?? "",
+    kind: (c[1] === "reading" ? "reading" : "problem") as "problem" | "reading",
+    item: c[2] ?? "",
+    pattern: c[3] ?? "—",
+  }));
+
+  return { roadmap, gear1, gear2, worklist };
 }

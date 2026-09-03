@@ -1,7 +1,8 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, type PanInfo } from "motion/react";
 import { Board, BoardLegend } from "@/components/game/Board";
 import { StreakChip, ProgressChip, FlagIcon } from "@/components/game/Frame";
+import { WorklistItems } from "@/components/game/Worklist";
 import { useLedgerStore } from "@/data/store";
 import {
   dueReps,
@@ -12,6 +13,8 @@ import {
   dayNumber,
   nextGate,
   upcomingReps,
+  currentWeek,
+  worklistForWeek,
   type DueRep,
 } from "@/data/derive";
 import { formatShortDate, parseShortDate } from "@/data/dates";
@@ -36,13 +39,25 @@ export function TodayView({
   today,
   punched,
   punchIn,
+  prefill,
+  onPrefillConsumed,
 }: {
   today: Date;
   punched: Set<string>;
   punchIn: (label: string) => void;
+  prefill?: { problem: string; pattern: string } | null;
+  onPrefillConsumed?: () => void;
 }) {
-  const { ledger } = useLedgerStore();
+  const { ledger, plan } = useLedgerStore();
   const [punchPulse, setPunchPulse] = useState(0);
+  const [quickFill, setQuickFill] = useState<{ problem: string; pattern: string } | null>(null);
+
+  useEffect(() => {
+    if (prefill) {
+      setQuickFill(prefill);
+      onPrefillConsumed?.();
+    }
+  }, [prefill, onPrefillConsumed]);
 
   const todayLabel = formatShortDate(today);
   const studied = useMemo(() => (ledger ? studiedDays(ledger, punched, today) : new Set<string>()), [ledger, punched, today]);
@@ -59,6 +74,8 @@ export function TodayView({
     return c.result === "—" && d && d.getTime() >= today.getTime();
   });
   const gate = nextGate(today);
+  const week = plan ? currentWeek(plan, today) : undefined;
+  const weekItems = plan && week ? worklistForWeek(plan, ledger, week.week) : [];
 
   return (
     <div>
@@ -128,8 +145,27 @@ export function TodayView({
 
       <div className="mt-12 grid items-start gap-8 lg:grid-cols-3">
         <RepsColumn due={due} />
-        <GearCard today={today} nextCpTitle={nextCp ? `Checkpoint ${nextCp.num} · ${nextCp.date}` : null} nextCpBar={nextCp?.bar ?? null} gateTiles={gate?.inDays ?? null} />
-        <QuickLog />
+        <div className="flex min-w-0 flex-col gap-8">
+          {week && weekItems.length > 0 && (
+            <div className="gcard px-[22px] py-5">
+              <div className="flex items-baseline justify-between gap-3">
+                <div className="font-display text-[22px]">This week's targets</div>
+                <span className="text-xs font-[900] text-ink-soft">W{week.week}</span>
+              </div>
+              <div className="mt-1 mb-3 text-[13px] font-bold text-ink-soft">
+                tap a problem → it loads the Quick log · essays check into the reading log
+              </div>
+              <WorklistItems
+                items={weekItems}
+                week={week.week}
+                limit={4}
+                onLogProblem={(item) => setQuickFill({ problem: item.item, pattern: item.pattern })}
+              />
+            </div>
+          )}
+          <GearCard today={today} nextCpTitle={nextCp ? `Checkpoint ${nextCp.num} · ${nextCp.date}` : null} nextCpBar={nextCp?.bar ?? null} gateTiles={gate?.inDays ?? null} />
+        </div>
+        <QuickLog fill={quickFill} onFillConsumed={() => setQuickFill(null)} />
       </div>
     </div>
   );
@@ -380,7 +416,13 @@ function GearCard({
 
 /* ─── quick log ─── */
 
-function QuickLog() {
+function QuickLog({
+  fill,
+  onFillConsumed,
+}: {
+  fill?: { problem: string; pattern: string } | null;
+  onFillConsumed?: () => void;
+}) {
   const { addSolve } = useLedgerStore();
   const [problem, setProblem] = useState("");
   const [pattern, setPattern] = useState("");
@@ -389,6 +431,15 @@ function QuickLog() {
   const [busy, setBusy] = useState(false);
   const [flash, setFlash] = useState<string | null>(null);
   const { ledger } = useLedgerStore();
+
+  useEffect(() => {
+    if (fill) {
+      setProblem(fill.problem);
+      setPattern(fill.pattern);
+      setFlash(null);
+      onFillConsumed?.();
+    }
+  }, [fill, onFillConsumed]);
 
   const ready = problem.trim() && pattern.trim() && verdict !== null;
 
