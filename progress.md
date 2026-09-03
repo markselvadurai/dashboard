@@ -10,7 +10,7 @@ Statuses: **Untouched** → **Learning** (currently studying) → **Shaky** (tou
 
 | Pattern | Week | Status | Last touched | Notes |
 |---|---|---|---|---|
-| Arrays & Hashing | 0–1 | Learning | Sep 3 | 8/9 NeetCode solved Sep 3 (3 Clean, 4 Slow, 1 Hints) → 5 rep chains running; Big-O phrasing needs polish |
+| Arrays & Hashing | 0–1 | Learning | Sep 3 | 8/9 NeetCode solved Sep 3 (3 Clean, 4 Slow, 1 Hints) → 5 rep chains running |
 | Two Pointers | 2 | Untouched | Sep 3 | Cue confirmed Sep 3 quiz (sorted+pair → converge + discard proof); solving starts W2 |
 | Binary Search (classic) | 2 | Untouched | — | |
 | Binary Search on the Answer | 2 | **Shaky** | Sep 2 | Failed cue quiz; cue = "smallest/largest X such that condition holds" |
@@ -58,7 +58,7 @@ Verdicts: **Clean** · **Slow** · **Hints** · **Fail**. Anything not Clean get
 | Date | Quiz | Score | Outcome |
 |---|---|---|---|
 | Sep 2 | Pattern cues #1 (5Q) | 3/5* | Missed BS-on-answer + mono stack → seeded reps above. *Q2 (two pointers) never reported |
-| Sep 3 | Cue rep #1 (4Q, A&H edition) | 4/4* | Q1: two-pointers cue confirmed (sorted+pair → converge, each move *discards* candidates). Q2–Q4 A&H retention all passed. *Language flags: said "O(log n)" for sort cost and pass count (→ O(n log n) / O(n)); said "sum" for "product" and swapped prefix/suffix names — drill Big-O phrasing aloud. W2/W3 cue reps deferred to topic start. Bonus AM rep: hashmap key immutability + Java cached-hash — Clean |
+| Sep 3 | Cue rep #1 (4Q, A&H edition) | 4/4* | Q1: two-pointers cue confirmed (sorted+pair → converge, each move *discards* candidates). Q2–Q4 A&H retention all passed. *A2 Big-O wording was a typing slip (O/log transposed — self-corrected, concept solid). Real flags: said "sum" for "product" twice and swapped prefix/suffix names in A4 — watch naming when narrating. W2/W3 cue reps deferred to topic start. Bonus AM rep: hashmap key immutability + Java cached-hash — Clean |
 
 ---
 
