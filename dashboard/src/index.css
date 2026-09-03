@@ -1,0 +1,203 @@
+@import "tailwindcss";
+
+/* ─── Mission Control · "Board Game" design tokens (design handoff 3f) ─── */
+
+@theme inline {
+  --color-table: var(--table);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink-drop: var(--ink-drop);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-shadow: var(--shadow);
+  --color-shadow-light: var(--shadow-light);
+  --color-pawn: var(--pawn);
+  --color-pawn-drop: var(--pawn-drop);
+  --color-gate: var(--gate);
+
+  --color-clean: var(--clean);
+  --color-clean-drop: var(--clean-drop);
+  --color-slow: var(--slow);
+  --color-slow-drop: var(--slow-drop);
+  --color-hints: var(--hints);
+  --color-hints-drop: var(--hints-drop);
+  --color-fail: var(--fail);
+  --color-fail-drop: var(--fail-drop);
+
+  --color-shaky: var(--shaky);
+  --color-shaky-drop: var(--shaky-drop);
+
+  --font-display: "Fredoka", "Nunito", sans-serif;
+  --font-sans: "Nunito", system-ui, sans-serif;
+}
+
+:root {
+  --table: #dff5e9;
+  --card: #ffffff;
+  --ink: #163a2b;
+  --ink-drop: #0a1f16;
+  --ink-soft: #3c6b57;
+  --muted: #8fb3a3;
+  --shadow: #b9dcc9;
+  --shadow-light: #cfe8db;
+  --pawn: #ff7a59;
+  --pawn-drop: #b8482e;
+  --gate: #ffd9e6;
+
+  /* verdict ladder — identical everywhere */
+  --clean: #3fae2a;
+  --clean-drop: #2b7f1d;
+  --slow: #1f8be0;
+  --slow-drop: #14619e;
+  --hints: #e5730f;
+  --hints-drop: #a5500a;
+  --fail: #e2287a;
+  --fail-drop: #a01755;
+
+  /* status ladder extras (learning = pawn, solid = clean) */
+  --shaky: #ffd34d;
+  --shaky-drop: #c99a12;
+
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--table);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  -webkit-font-smoothing: antialiased;
+}
+
+::placeholder {
+  color: #5f8a77;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ─── shared pieces ─── */
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+/* white card: 0 10px 0 shadow */
+.gcard {
+  background: var(--card);
+  border-radius: 22px;
+  box-shadow: 0 10px 0 var(--shadow);
+}
+
+/* rail: 0 8px 0 */
+.grail {
+  background: var(--card);
+  border-radius: 22px;
+  box-shadow: 0 8px 0 var(--shadow);
+}
+
+/* kicker */
+.kicker {
+  font-weight: 900;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* chunky pressed button — set --drop per instance */
+.press {
+  --drop: var(--shadow);
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 6px 0 var(--drop);
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+}
+.press:hover:not(:disabled),
+.press:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 var(--drop);
+}
+.press:disabled {
+  cursor: default;
+}
+
+.press-sm {
+  --drop: var(--shadow);
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--drop);
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+}
+.press-sm:hover:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--drop);
+}
+
+/* mint input */
+.ginput {
+  font: 700 14px var(--font-sans);
+  border: 0;
+  border-radius: 12px;
+  padding: 11px 14px;
+  background: var(--table);
+  color: var(--ink);
+  width: 100%;
+}
+
+/* board loops */
+@keyframes wob {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+@keyframes flick {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12) rotate(-4deg);
+  }
+}
+.anim-wob {
+  animation: wob 1.6s ease-in-out infinite;
+}
+.anim-flick {
+  display: inline-block;
+  animation: flick 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-wob,
+  .anim-flick {
+    animation: none;
+  }
+  .press,
+  .press-sm {
+    transition: none;
+  }
+}
+:root.static-mode .anim-wob,
+:root.static-mode .anim-flick {
+  animation: none;
+}
