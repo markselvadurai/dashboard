@@ -75,5 +75,7 @@ Verdicts: **Clean** · **Slow** · **Hints** · **Fail**. Anything not Clean get
 
 Second job of this repo: track the hunt. One row per application; update status as it moves. Statuses: **Applied** → **OA** → **Phone** → **Onsite** → **Offer** / **Rejected** / **Ghosted**.
 
+**Warm referral channels (agreed Sep 2026):** RBC (former RBC Edge colleagues) · TD. Activate when a specific new-grad req opens: send the referrer the posting link + tailored resume same-day — referrals attach to a requisition, not to a person in the abstract. Watch both banks' early-talent boards; ask contacts to flag internal postings early.
+
 | Company | Role | Applied | Status | Next step |
 |---|---|---|---|---|
