@@ -20,7 +20,7 @@ export function WorklistItems({
 }) {
   const { addReading, readOnly } = useLedgerStore();
   const readings = items.filter((i) => i.item.kind === "reading");
-  const problems = items.filter((i) => i.item.kind === "problem");
+  const problems = items.filter((i) => i.item.kind !== "reading");
   const undone = problems.filter((p) => !p.done);
   const shown = limit ? undone.slice(0, limit) : problems;
   const hidden = limit ? undone.length - shown.length : 0;
@@ -70,10 +70,16 @@ export function WorklistItems({
       <div className="flex flex-wrap gap-1.5">
         {shown.map(({ item, done }) => (
           <button
-            key={item.item}
+            key={`${item.kind}-${item.item}`}
             disabled={done || readOnly || !onLogProblem}
             onClick={() => onLogProblem?.(item)}
-            title={done ? "In the mistake log" : `Log ${item.item} (${item.pattern})`}
+            title={
+              item.kind === "diagnostic"
+                ? `Diagnostic baseline — solve cold and timed (${item.pattern}); it re-appears in its home week`
+                : done
+                  ? "In the mistake log"
+                  : `Log ${item.item} (${item.pattern})`
+            }
             className={cn(
               "flex items-center gap-1.5 rounded-[10px] px-2.5 py-1.5 text-xs font-[900] transition-transform",
               done
@@ -91,6 +97,11 @@ export function WorklistItems({
               {done ? "✓" : ""}
             </i>
             {item.item}
+            {item.kind === "diagnostic" && (
+              <span className={cn("rounded-full px-1.5 text-[9px]", done ? "bg-white/25" : "bg-gate text-fail-drop")}>
+                diag
+              </span>
+            )}
           </button>
         ))}
         {limit !== undefined && (hidden > 0 || doneCount > 0) && (

@@ -250,24 +250,36 @@ export interface WorklistStatus {
   done: boolean;
 }
 
-export function worklistForWeek(plan: PlanData, ledger: Ledger, week: string): WorklistStatus[] {
-  const solved = ledger.mistakeLog.map((e) => normalizeName(e.problem));
+/** Done-states for the whole worklist. A problem can appear in two weeks (W0
+ *  diagnostic + in-topic home week); each mistake-log row is one credit and is
+ *  consumed by the earliest unmatched copy, so the cold baseline pass doesn't
+ *  check off the in-topic pass. Rep ticks update an existing row and add no
+ *  credit — a second pass needs its own log row. */
+export function worklistStatuses(plan: PlanData, ledger: Ledger): WorklistStatus[] {
   const read = ledger.readingLog.map((r) => normalizeName(r.essay));
-  return plan.worklist
-    .filter((w) => w.week === week)
-    .map((item) => {
-      const n = normalizeName(item.item);
-      const done =
-        item.kind === "problem" ? solved.some((s) => namesMatch(s, n)) : read.some((r) => namesMatch(r, n));
-      return { item, done };
-    });
+  const credits = ledger.mistakeLog.map((e) => ({ n: normalizeName(e.problem), used: false }));
+  return plan.worklist.map((item) => {
+    const n = normalizeName(item.item);
+    if (item.kind === "reading") {
+      return { item, done: read.some((r) => namesMatch(r, n)) };
+    }
+    const credit = credits.find((c) => !c.used && namesMatch(c.n, n));
+    if (credit) credit.used = true;
+    return { item, done: Boolean(credit) };
+  });
+}
+
+export function worklistForWeek(plan: PlanData, ledger: Ledger, week: string): WorklistStatus[] {
+  return worklistStatuses(plan, ledger).filter((s) => s.item.week === week);
 }
 
 export function worklistProgress(plan: PlanData, ledger: Ledger): Map<string, { done: number; total: number }> {
   const out = new Map<string, { done: number; total: number }>();
-  for (const w of new Set(plan.worklist.map((i) => i.week))) {
-    const items = worklistForWeek(plan, ledger, w);
-    out.set(w, { done: items.filter((i) => i.done).length, total: items.length });
+  for (const s of worklistStatuses(plan, ledger)) {
+    const agg = out.get(s.item.week) ?? { done: 0, total: 0 };
+    agg.total += 1;
+    if (s.done) agg.done += 1;
+    out.set(s.item.week, agg);
   }
   return out;
 }

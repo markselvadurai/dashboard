@@ -22,10 +22,10 @@ describe("markdown surgery on the real ledger", () => {
     expect(afterLines.length).toBe(beforeLines.length + 1);
     const added = afterLines.filter((l) => !beforeLines.includes(l));
     expect(added).toEqual(["| Sep 2 | Two Sum | Arrays & Hashing | Clean | hash map lookup | — |"]);
-    // the italic note under the table survives, still after the table
-    expect(after).toContain("*(Sep 3 boxes pre-checked");
-    const noteIdx = afterLines.findIndex((l) => l.startsWith("*(Sep 3"));
-    const rowIdx = afterLines.findIndex((l) => l.includes("| Two Sum |"));
+    // the italic note under the table survives, still after the appended row
+    const noteIdx = afterLines.findIndex((l) => l.startsWith("*("));
+    const rowIdx = afterLines.findIndex((l) => l === added[0]);
+    expect(noteIdx).toBeGreaterThan(-1);
     expect(rowIdx).toBeLessThan(noteIdx);
   });
 
@@ -59,19 +59,19 @@ describe("parsers on the real files", () => {
   it("parses all four progress tables", () => {
     const ledger = parseProgress(progress);
     expect(ledger.patterns.length).toBe(19);
-    expect(ledger.mistakeLog.length).toBe(2);
-    expect(ledger.quizLog.length).toBe(2);
+    // the ledger grows; assert floors + shape, not snapshots
+    expect(ledger.mistakeLog.length).toBeGreaterThanOrEqual(12);
+    expect(ledger.quizLog.length).toBeGreaterThanOrEqual(2);
     expect(ledger.checkpoints.length).toBe(4);
     expect(ledger.openDecisions.length).toBeGreaterThan(0);
     expect(ledger.patterns.find((p) => p.pattern === "Monotonic Stack")?.status).toBe("Shaky");
   });
 
   it("parses rep chains with states", () => {
-    const ledger = parseProgress(progress);
-    const reps = ledger.mistakeLog[0].reps;
-    expect(reps).toEqual([
+    // literal cell, not the live ledger — chain states evolve daily
+    expect(parseRepsCell("Sep 3 ✅ · Sep 5 ❌ · Sep 9")).toEqual([
       { date: "Sep 3", state: "done" },
-      { date: "Sep 5", state: "pending" },
+      { date: "Sep 5", state: "missed" },
       { date: "Sep 9", state: "pending" },
     ]);
   });
@@ -94,14 +94,30 @@ describe("parsers on the real files", () => {
 
   it("parses the week worklists", () => {
     const p = parsePlan(plan);
-    expect(p.worklist.length).toBe(106);
+    expect(p.worklist.length).toBe(109);
     expect(p.worklist.filter((w) => w.kind === "reading").length).toBe(14);
+    expect(p.worklist.filter((w) => w.kind === "diagnostic").length).toBe(4);
     const koko = p.worklist.find((w) => w.item === "Koko Eating Bananas");
     expect(koko).toMatchObject({ week: "2", kind: "problem", pattern: "Binary Search on the Answer" });
     // reading cells are markdown links → title + url split apart
     const dp = p.worklist.find((w) => w.item.startsWith("Dynamic Programming"));
     expect(dp?.link).toBe("https://labuladong.online/en/algo/essential-technique/dynamic-programming-framework/");
     expect(dp?.item).not.toContain("](");
+  });
+
+  it("one log row checks off one worklist copy, earliest week first", async () => {
+    const { worklistStatuses } = await import("./src/data/derive");
+    const p = parsePlan(plan);
+    const ledger = parseProgress(progress);
+    // Valid Parentheses is logged once (Sep 5 diagnostic): W0 copy done, W3 in-topic copy still open
+    const copies = worklistStatuses(p, ledger).filter((s) => s.item.item === "Valid Parentheses");
+    expect(copies.map((c) => [c.item.week, c.item.kind, c.done])).toEqual([
+      ["0", "diagnostic", true],
+      ["3", "problem", false],
+    ]);
+    // Two Sum ≠ Two Sum II — no cross-crediting
+    const ts2 = worklistStatuses(p, ledger).find((s) => s.item.item === "Two Sum II");
+    expect(ts2?.done).toBe(false);
   });
 
   it("parses the (empty) reading log and accepts appended rows", () => {

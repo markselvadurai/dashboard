@@ -73,7 +73,8 @@ export interface Ledger {
 
 export interface WorklistItem {
   week: string; // "0".."8"
-  kind: "problem" | "reading";
+  /** diagnostic = W0 cold baseline probe (re-appears as `problem` in its home week) */
+  kind: "problem" | "reading" | "diagnostic";
   item: string;
   pattern: string; // "—" for readings
   /** essay URL, when the plan.md cell is a markdown link */

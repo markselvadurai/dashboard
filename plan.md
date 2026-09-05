@@ -169,15 +169,15 @@ Verdicts: **Clean** (in time, no help) · **Slow** (solved, over cap) · **Hints
 
 ## 10. Week Worklists
 
-The §4 phase details as a checkable list — the dashboard reads this table. One `reading` row per week (the Block A essay, labuladong.online) and one `problem` row per solve target. A problem counts as done when it has a mistake-log row; a reading counts as done when it has a Reading Log row (progress.md §7).
+The §4 phase details as a checkable list — the dashboard reads this table. One `reading` row per week (the Block A essay, labuladong.online) and one `problem` row per solve target. `diagnostic` rows are the W0 cold-baseline probes — they deliberately sample future topics, and each reappears as a `problem` row in its home week for the in-topic pass. A problem/diagnostic counts as done when it has its own mistake-log row (each log row checks off one copy, earliest week first); a reading counts as done when it has a Reading Log row (progress.md §7).
 
 | Week | Kind | Item | Pattern |
 |---|---|---|---|
 | 0 | reading | [How to Think About Data Structure and Algorithm](https://labuladong.online/en/algo/essential-technique/algorithm-summary/) | — |
-| 0 | problem | Two Sum | Arrays & Hashing |
-| 0 | problem | Valid Parentheses | Stack (classic) |
-| 0 | problem | Best Time to Buy and Sell Stock | Sliding Window |
-| 0 | problem | Reverse Linked List | Linked Lists |
+| 0 | diagnostic | Two Sum | Arrays & Hashing |
+| 0 | diagnostic | Valid Parentheses | Stack (classic) |
+| 0 | diagnostic | Best Time to Buy and Sell Stock | Sliding Window |
+| 0 | diagnostic | Reverse Linked List | Linked Lists |
 | 0 | problem | Contains Duplicate | Arrays & Hashing |
 | 0 | problem | Valid Anagram | Arrays & Hashing |
 | 0 | problem | Group Anagrams | Arrays & Hashing |
@@ -201,9 +201,11 @@ The §4 phase details as a checkable list — the dashboard reads this table. On
 | 2 | problem | Search a 2D Matrix | Binary Search (classic) |
 | 3 | reading | [Sliding Window Algorithm Code Template](https://labuladong.online/en/algo/essential-technique/sliding-window-framework/) | — |
 | 3 | reading | [Monotonic Stack Code Template](https://labuladong.online/en/algo/data-structure/monotonic-stack/) | — |
+| 3 | problem | Best Time to Buy and Sell Stock | Sliding Window |
 | 3 | problem | Longest Substring Without Repeating Characters | Sliding Window |
 | 3 | problem | Longest Repeating Character Replacement | Sliding Window |
 | 3 | problem | Permutation in String | Sliding Window |
+| 3 | problem | Valid Parentheses | Stack (classic) |
 | 3 | problem | Min Stack | Stack (classic) |
 | 3 | problem | Evaluate Reverse Polish Notation | Stack (classic) |
 | 3 | problem | Daily Temperatures | Monotonic Stack |
@@ -211,6 +213,7 @@ The §4 phase details as a checkable list — the dashboard reads this table. On
 | 3 | problem | Car Fleet | Monotonic Stack |
 | 4 | reading | [Two Pointer Techniques for Linked List Problems](https://labuladong.online/en/algo/essential-technique/linked-list-skills-summary/) | — |
 | 4 | reading | [Thinking Recursion Algorithms from Binary Tree Perspective](https://labuladong.online/en/algo/essential-technique/binary-tree-summary/) | — |
+| 4 | problem | Reverse Linked List | Linked Lists |
 | 4 | problem | Merge Two Sorted Lists | Linked Lists |
 | 4 | problem | Linked List Cycle | Linked Lists |
 | 4 | problem | Reorder List | Linked Lists |

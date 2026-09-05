@@ -159,9 +159,10 @@ export function parsePlan(content: string): PlanData {
   const worklist = tableInSection(content, "Week Worklists").map((c) => {
     const raw = c[2] ?? "";
     const md = /^\[(.+?)\]\((.+?)\)$/.exec(raw);
+    const kind = c[1] === "reading" ? "reading" : c[1] === "diagnostic" ? "diagnostic" : "problem";
     return {
       week: c[0] ?? "",
-      kind: (c[1] === "reading" ? "reading" : "problem") as "problem" | "reading",
+      kind: kind as "problem" | "reading" | "diagnostic",
       item: md ? md[1] : raw,
       link: md?.[2],
       pattern: c[3] ?? "—",
