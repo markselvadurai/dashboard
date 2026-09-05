@@ -14,8 +14,8 @@ Statuses: **Untouched** → **Learning** (currently studying) → **Shaky** (tou
 | Two Pointers | 2 | Untouched | Sep 3 | Cue confirmed Sep 3 quiz (sorted+pair → converge + discard proof); solving starts W2 |
 | Binary Search (classic) | 2 | Untouched | — | |
 | Binary Search on the Answer | 2 | **Shaky** | Sep 2 | Failed cue quiz; cue = "smallest/largest X such that condition holds" |
-| Sliding Window | 3 | Untouched | — | Cue recognized twice in quizzes — solving still untouched |
-| Stack (classic) | 3 | Untouched | — | |
+| Sliding Window | 3 | Untouched | Sep 5 | Cue recognized twice in quizzes; Buy/Sell Stock clean in diagnostic Sep 5 |
+| Stack (classic) | 3 | Untouched | Sep 5 | Valid Parentheses clean in diagnostic Sep 5 |
 | Monotonic Stack | 3 | **Shaky** | Sep 2 | Failed cue quiz; cue = "next greater / first X to the right" |
 | Linked Lists | 4 | Untouched | — | |
 | Trees I (traversal) | 4 | Untouched | — | |
@@ -48,6 +48,8 @@ Verdicts: **Clean** · **Slow** · **Hints** · **Fail**. Anything not Clean get
 | Sep 3 | Encode and Decode Strings | Arrays & Hashing | Hints | Length-prefix each string ("4#abcd") — delimiters can appear inside the data | Sep 4 · Sep 6 · Sep 10 |
 | Sep 3 | Product of Array Except Self | Arrays & Hashing | Slow | output[i] = prefix product (before i) × suffix product (after i); follow-up: fold a running product into output for O(1) space | Sep 4 · Sep 6 · Sep 10 |
 | Sep 3 | Valid Sudoku | Arrays & Hashing | Slow | 9 row sets + 9 col sets + 9 box sets; box id = (r//3, c//3) | Sep 4 · Sep 6 · Sep 10 |
+| Sep 5 | Valid Parentheses | Stack (classic) | Clean | Diagnostic. `in` on a map/set searches keys/members, not values — closer→opener map + stack of openers | — |
+| Sep 5 | Best Time to Buy and Sell Stock | Sliding Window | Clean | Diagnostic. Track running min price; profit = price − minSoFar. (DP framing arrives W8) | — |
 
 *(Sep 2 cue chains re-aligned to roadmap order Sep 3: BS-on-answer rep runs with the W2 start (Sep 4); monotonic stack waits for W3 Stack study. Nothing failed — deferred by design: quiz only touched material.)*
 
